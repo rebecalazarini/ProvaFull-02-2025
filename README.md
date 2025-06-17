@@ -14,8 +14,6 @@ A apresentação das tarefas será feita em uma tabela com três colunas represe
 
 
 Imagens 
-
-|PetGatô Swot (fofa)|
 |:-:|
 |![dc](./docs/wireframes/diagrama%20de%20caso%20uso.png)|
 |:-:|
