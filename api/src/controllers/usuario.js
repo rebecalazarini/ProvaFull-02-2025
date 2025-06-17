@@ -9,10 +9,9 @@ const create = async (req, res) => {
       return res.status(400).json({ error: 'Por favor, preencha todos os campos.' });
     }
 
-    const emailRegex = /\S+@\S+\.\S+/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({ error: 'Insira um e-mail válido.' });
-    }
+   if (!email.includes('@') || !email.includes('.')) {
+  return res.status(400).json({ error: 'Insira um e-mail válido.' });
+}
 
     const usuarioExistente = await prisma.usuario.findUnique({
       where: { email }
