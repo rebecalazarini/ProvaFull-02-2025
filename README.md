@@ -21,6 +21,13 @@ Imagens
 |:-:|
 |![der](./docs/wireframes/der.png)|
 
+## Como testar 
+```bash
+cd api
+npm i 
+npx prisma migrate dev --name init
+npx nodemon server.js
+```
 
 
 
