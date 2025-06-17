@@ -1,7 +1,6 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-
 async function get(req, res) {
     try {
         const tarefas = await prisma.tarefa.findMany({
@@ -17,12 +16,12 @@ async function get(req, res) {
     }
 }
 
-
 async function update(req, res) {
-    const { id, descricao, setor, prioridade, status, usuarioId } = req.body;
+    const { id } = req.params; // Obter o ID da tarefa a partir dos parâmetros da URL
+    const { descricao, setor, prioridade, status, usuarioId } = req.body;
     try {
         const tarefaAtualizada = await prisma.tarefa.update({
-            where: { id },
+            where: { id: parseInt(id) },
             data: { descricao, setor, prioridade, status, usuarioId }
         });
         res.json(tarefaAtualizada);
@@ -30,7 +29,6 @@ async function update(req, res) {
         res.status(500).json({ message: 'Erro ao atualizar tarefa.' });
     }
 }
-
 
 async function remove(req, res) {
     const { id } = req.params;
@@ -44,12 +42,12 @@ async function remove(req, res) {
     }
 }
 
-
 async function atualizarStatus(req, res) {
-    const { id, status } = req.body;
+    const { id } = req.params; // Obter o ID da tarefa a partir dos parâmetros da URL
+    const { status } = req.body;
     try {
         const tarefaAtualizada = await prisma.tarefa.update({
-            where: { id },
+            where: { id: parseInt(id) },
             data: { status }
         });
         res.json(tarefaAtualizada);

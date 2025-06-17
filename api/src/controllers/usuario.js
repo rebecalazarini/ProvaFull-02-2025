@@ -9,9 +9,9 @@ const create = async (req, res) => {
       return res.status(400).json({ error: 'Por favor, preencha todos os campos.' });
     }
 
-   if (!email.includes('@') || !email.includes('.')) {
-  return res.status(400).json({ error: 'Insira um e-mail válido.' });
-}
+    if (!email.includes('@') || !email.includes('.')) {
+      return res.status(400).json({ error: 'Insira um e-mail válido.' });
+    }
 
     const usuarioExistente = await prisma.usuario.findUnique({
       where: { email }
@@ -36,20 +36,20 @@ const create = async (req, res) => {
 };
 
 const read = async (req, res) => {
-    try {
-        const usuarioId = parseInt(req.params.id);
-        const usuario = await prisma.usuario.findUnique({
-            where: { id: usuarioId }
-        });
+  try {
+    const usuarioId = parseInt(req.params.id);
+    const usuario = await prisma.usuario.findUnique({
+      where: { id: usuarioId }
+    });
 
-        if (!usuario) {
-            return res.status(404).json({ error: 'Usuário não encontrado.' });
-        }
-
-        return res.status(200).json(usuario);
-    } catch (error) {
-        return res.status(400).json({ error: error.message });
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuário não encontrado.' });
     }
+
+    return res.status(200).json(usuario);
+  } catch (error) {
+    return res.status(400).json({ error: error.message });
+  }
 };
 
 const update = async (req, res) => {
@@ -63,7 +63,6 @@ const update = async (req, res) => {
     return res.status(400).json({ error: error.message });
   }
 };
-
 
 const remove = async (req, res) => {
   try {
