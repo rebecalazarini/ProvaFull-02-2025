@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -28,7 +28,7 @@
             <th>Email</th>
         </tr>
     </thead>
-    <tbody></tbody> <!-- Esse é o corpo da tabela -->
+    <tbody></tbody>
 </table> 
     </main>
 
@@ -38,4 +38,46 @@
 
     <script src="script1.js"></script>
 </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- Header com título e 3 botões -->
+    <header>
+        <div class="header-left">
+            <h2>Gerenciamento de Tarefas</h2>
+        </div>
+        <div class="header-right">
+            <button onclick="window.location.href='Cadastro.html'">Cadastro de Usuários</button>
+            <button onclick="window.location.href='CadastroTarefas.html'">Cadastro de Tarefas</button>
+            <button onclick="window.location.href='gerenciarTarefa.html'">Gerenciar Tarefas</button>
+        </div>
+    </header>
+
+    <main>
+        <h3>Cadastro de Usuário</h3>
+        <form id="formCadastroUsuario">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <button type="submit">Cadastrar</button>
+        </form>
+    </main>
+
+
+   <script src="usuario.js"></script>
+</body>
+
 </html>
