@@ -1,12 +1,12 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: Georgia, 'Times New Roman', Times, serif;
   margin: 0;
   padding: 0;
-  background-color: #f9f9f9;
+  background-color: #b889df91;
 }
 
 header {
-  background-color: #007bff;
+  background-color: #b412ff;
   color: white;
   padding: 15px 20px;
   display: flex;
@@ -20,7 +20,7 @@ header h1 {
 }
 
 nav a {
-  color: white;
+  color: rgb(255, 255, 255);
   margin-left: 20px;
   text-decoration: none;
   font-size: 14px;
@@ -46,7 +46,7 @@ input[type="text"], select {
 
 button {
   padding: 6px 12px;
-  background-color: #007bff;
+  background-color: #c1a2e6;
   color: white;
   border: none;
   cursor: pointer;
