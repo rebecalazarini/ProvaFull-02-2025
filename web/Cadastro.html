@@ -33,24 +33,21 @@
 
     <script>
         document.getElementById('formCadastroUsuario').addEventListener('submit', function(event) {
-            event.preventDefault(); // Impede o envio padrão do formulário
+            event.preventDefault(); 
 
-            // Captura os dados do formulário
             const nome = document.getElementById('nome').value;
             const email = document.getElementById('email').value;
 
-            // Cria um objeto usuário
             const usuario = {
                 nome,
                 email
             };
 
-            // Armazena o usuário no localStorage
+          
             let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
             usuarios.push(usuario);
             localStorage.setItem('usuarios', JSON.stringify(usuarios));
 
-            // Redireciona para a página de cadastro de tarefas
             window.location.href = 'CadastroTarefas.html';
         });
     </script>

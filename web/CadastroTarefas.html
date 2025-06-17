@@ -45,28 +45,27 @@
     </main>
 
     <script>
-        // Carrega os usuários do localStorage
         const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
         const usuarioSelect = document.getElementById('usuario');
 
         usuarios.forEach(usuario => {
             const option = document.createElement('option');
-            option.value = usuario.nome; // ou usuario.email, dependendo do que você deseja usar
+            option.value = usuario.nome; 
             option.textContent = usuario.nome;
             usuarioSelect.appendChild(option);
         });
 
         document.getElementById('formCadastroTarefa').addEventListener('submit', function(event) {
-            event.preventDefault(); // Impede o envio padrão do formulário
+            event.preventDefault(); 
 
-            // Captura os dados do formulário
+          
             const usuario = document.getElementById('usuario').value;
             const descricao = document.getElementById('descricao').value;
             const setor = document.getElementById('setor').value;
             const prioridade = document.getElementById('prioridade').value;
             const status = document.getElementById('status').value;
 
-            // Cria um objeto tarefa
+         
             const tarefa = {
                 usuario,
                 descricao,
@@ -75,12 +74,12 @@
                 status
             };
 
-            // Armazena a tarefa no localStorage
+          
             let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
             tarefas.push(tarefa);
             localStorage.setItem('tarefas', JSON.stringify(tarefas));
 
-            // Redireciona para a página de gerenciamento de tarefas
+          
             window.location.href = 'gerenciarTarefa.html';
         });
     </script>

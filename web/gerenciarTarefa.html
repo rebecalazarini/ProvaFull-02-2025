@@ -81,17 +81,16 @@
     function excluirTarefa(index) {
       tarefas.splice(index, 1);
       localStorage.setItem('tarefas', JSON.stringify(tarefas));
-      location.reload(); // Atualiza a página para mostrar as alterações
+      location.reload();
     }
 
     // Função para mudar o status da tarefa
     function mudarStatus(index, novoStatus) {
       tarefas[index].status = novoStatus;
       localStorage.setItem('tarefas', JSON.stringify(tarefas));
-      location.reload(); // Atualiza a página para mostrar as alterações
+      location.reload(); 
     }
 
-    // Chama a função para exibir as tarefas
     exibirTarefas();
   </script>
 </body>
