@@ -24,3 +24,9 @@ model Tarefa{
     usuarioId Int
     usuario Usuario @relation(fields: [usuarioId], references: [id])
 }
+
+enum Status {
+  AFAZER
+  FAZENDO
+  PRONTO
+}

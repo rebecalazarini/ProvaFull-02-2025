@@ -5,38 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciameto</title>
-    <link rel="shortcut icon" href="./assets/i.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <header>
-        <h1>Gerenciamneto de Tarefas</h1> 
-        <button type="button">Cadastro de Usuários</button>
-        <button type="button">Cadastro de Tarefas</button>
-        <button type="button">Gerenciar Tarefas</button>
+        <h1>Gerenciamento de Tarefas</h1> 
+        <button type="button" onclick="window.location.href='Cadastro.html'">Cadastro de Usuários</button>
+        <button type="button" onclick="window.location.href='CadastroTarefas.html'">Cadastro de Tarefas</button>
+        <button type="button" onclick="window.location.href='gerenciarTarefa.html'">Gerenciar Tarefas</button>
     </header>
-     <form>
-            <input type="text" name="nome" placeholder="Nome completo" required>
-            <input type="email" name="email" placeholder="E-mail" required>
-            <button type="submit">Cadastrar</button>
-        </form>
+
     <main>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>E-mail</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
     </main>
+
     <footer>
         <h2>by rebecalazarini</h2>
     </footer>
+
+    <script src="script.js"></script>
 </body>
-<script src="script.js"></script>
 
 </html>
