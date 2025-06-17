@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Tarefa</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-   
     <header>
         <div class="header-left">
             <h2>Gerenciamento de Tarefas</h2>
@@ -20,7 +17,6 @@
             <button onclick="window.location.href='gerenciarTarefa.html'">Gerenciar Tarefas</button>
         </div>
     </header>
-
   
     <main>
         <h3>Cadastro de Tarefas</h3>
@@ -48,8 +44,45 @@
         </form>
     </main>
 
+    <script>
+        // Carrega os usuários do localStorage
+        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        const usuarioSelect = document.getElementById('usuario');
 
-    <script src="script.js"></script>
+        usuarios.forEach(usuario => {
+            const option = document.createElement('option');
+            option.value = usuario.nome; // ou usuario.email, dependendo do que você deseja usar
+            option.textContent = usuario.nome;
+            usuarioSelect.appendChild(option);
+        });
+
+        document.getElementById('formCadastroTarefa').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
+
+            // Captura os dados do formulário
+            const usuario = document.getElementById('usuario').value;
+            const descricao = document.getElementById('descricao').value;
+            const setor = document.getElementById('setor').value;
+            const prioridade = document.getElementById('prioridade').value;
+            const status = document.getElementById('status').value;
+
+            // Cria um objeto tarefa
+            const tarefa = {
+                usuario,
+                descricao,
+                setor,
+                prioridade,
+                status
+            };
+
+            // Armazena a tarefa no localStorage
+            let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+            tarefas.push(tarefa);
+            localStorage.setItem('tarefas', JSON.stringify(tarefas));
+
+            // Redireciona para a página de gerenciamento de tarefas
+            window.location.href = 'gerenciarTarefa.html';
+        });
+    </script>
 </body>
-
 </html>

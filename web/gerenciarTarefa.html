@@ -20,61 +20,71 @@
     <div class="tarefas">
       <div class="coluna">
         <h3>A Fazer</h3>
-        <div class="card">
-          <strong>Descrição:</strong> Descrição da tarefa de Alta Prioridade<br>
-          <strong>Setor:</strong> Setor Y<br>
-          <strong>Prioridade:</strong> Alta<br>
-          <strong>Vinculado a:</strong> Usuário A<br>
-          <button>Editar</button> <button>Excluir</button><br>
-          <br>
-          <option>Alterar status</option>
-          <button>Fazendo</button>
-          <button>Pronto</button>
-        </div>
-        <div class="card">
-          <strong>Descrição:</strong> Descrição da tarefa 1<br>
-          <strong>Setor:</strong> Setor J<br>
-          <strong>Prioridade:</strong> Média<br>
-          <strong>Vinculado a:</strong> Usuário B<br>
-          <button>Editar</button> <button>Excluir</button>
-           <br>
-           <br>
-          <option>Alterar status</option>
-          <button>Fazendo</button>
-          <button>Pronto</button>
-        </div>
+        <div id="tarefasAFazer"></div>
       </div>
       <div class="coluna">
         <h3>Fazendo</h3>
-        <div class="card">
-          <strong>Descrição:</strong> Descrição da tarefa de Baixa Prioridade<br>
-          <strong>Setor:</strong> Setor F<br>
-          <strong>Prioridade:</strong> Baixa<br>
-          <strong>Vinculado a:</strong> Usuário C<br>
-          <button>Editar</button> <button>Excluir</button><br>
-           <br>
-          <option>Alterar status</option>
-          <button>A fazer</button>
-          <button>Pronto</button>
-        </div>
+        <div id="tarefasFazendo"></div>
       </div>
       <div class="coluna">
         <h3>Pronto</h3>
-        <div class="card">
-          <strong>Descrição:</strong> Descrição da tarefa concluída<br>
-          <strong>Setor:</strong> Setor H<br>
-          <strong>Prioridade:</strong> Média<br>
-          <strong>Vinculado a:</strong> Usuário D<br>
-          <button>Editar</button> <button>Excluir</button><br>
-          <br>
-          <option>Alterar status</option>
-          <button>A fazer</button>
-          <button>Pronto</button>
-        </div>
+        <div id="tarefasPronto"></div>
       </div>
     </div>
-
   </div>
 
+  <script>
+    // Recupera as tarefas do localStorage
+    const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+
+    // Função para exibir as tarefas
+    function exibirTarefas() {
+      tarefas.forEach((tarefa, index) => {
+        const tarefaDiv = document.createElement('div');
+        tarefaDiv.classList.add('card');
+        tarefaDiv.innerHTML = `
+          <strong>Descrição:</strong> ${tarefa.descricao}<br>
+          <strong>Setor:</strong> ${tarefa.setor}<br>
+          <strong>Prioridade:</strong> ${tarefa.prioridade}<br>
+          <strong>Vinculado a:</strong> ${tarefa.usuario}<br>
+          <button onclick="editarTarefa(${index})">Editar</button> 
+          <button onclick="excluirTarefa(${index})">Excluir</button><br>
+          <br>
+          <option>Alterar status</option>
+          <button onclick="mudarStatus(${index}, 'Fazendo')">Fazendo</button>
+          <button onclick="mudarStatus(${index}, 'Pronto')">Pronto</button>
+        `;
+        document.getElementById('tarefasAFazer').appendChild(tarefaDiv);
+      });
+    }
+
+    // Função para editar uma tarefa
+    function editarTarefa(index) {
+      const tarefa = tarefas[index];
+      const descricao = prompt("Editar descrição:", tarefa.descricao);
+      if (descricao) {
+        tarefa.descricao = descricao;
+        localStorage.setItem('tarefas', JSON.stringify(tarefas));
+        location.reload(); // Atualiza a página para mostrar as alterações
+      }
+    }
+
+    // Função para excluir uma tarefa
+    function excluirTarefa(index) {
+      tarefas.splice(index, 1);
+      localStorage.setItem('tarefas', JSON.stringify(tarefas));
+      location.reload(); // Atualiza a página para mostrar as alterações
+    }
+
+    // Função para mudar o status da tarefa
+    function mudarStatus(index, novoStatus) {
+      tarefas[index].status = novoStatus;
+      localStorage.setItem('tarefas', JSON.stringify(tarefas));
+      location.reload(); // Atualiza a página para mostrar as alterações
+    }
+
+    // Chama a função para exibir as tarefas
+    exibirTarefas();
+  </script>
 </body>
 </html>

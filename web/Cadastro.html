@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Usuário</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  
     <header>
         <div class="header-left">
             <h2>Gerenciamento de Tarefas</h2>
@@ -34,8 +31,28 @@
         </form>
     </main>
 
+    <script>
+        document.getElementById('formCadastroUsuario').addEventListener('submit', function(event) {
+            event.preventDefault(); // Impede o envio padrão do formulário
 
-   <script src="usuario.js"></script>
+            // Captura os dados do formulário
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+
+            // Cria um objeto usuário
+            const usuario = {
+                nome,
+                email
+            };
+
+            // Armazena o usuário no localStorage
+            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            usuarios.push(usuario);
+            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+            // Redireciona para a página de cadastro de tarefas
+            window.location.href = 'CadastroTarefas.html';
+        });
+    </script>
 </body>
-
 </html>
