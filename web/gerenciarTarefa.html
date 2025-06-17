@@ -54,7 +54,15 @@
           <button onclick="mudarStatus(${index}, 'Fazendo')">Fazendo</button>
           <button onclick="mudarStatus(${index}, 'Pronto')">Pronto</button>
         `;
-        document.getElementById('tarefasAFazer').appendChild(tarefaDiv);
+
+        // Adiciona a tarefa na coluna correta com base no status
+        if (tarefa.status === 'Fazendo') {
+          document.getElementById('tarefasFazendo').appendChild(tarefaDiv);
+        } else if (tarefa.status === 'Pronto') {
+          document.getElementById('tarefasPronto').appendChild(tarefaDiv);
+        } else {
+          document.getElementById('tarefasAFazer').appendChild(tarefaDiv);
+        }
       });
     }
 
