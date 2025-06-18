@@ -37,51 +37,76 @@
                 <option value="alta">Alta</option>
             </select>
 
-            <label for="status">Status</label>
-            <input type="text" id="status" name="status" required>
+           <label for="status">Status</label>
+           <select id="status" name="status" required>
+           <option value="AFAZER">A Fazer</option>
+           <option value="FAZENDO">Fazendo</option>
+           <option value="PRONTO">Pronto</option>
+           </select>
+
 
             <button type="submit">Cadastrar Tarefa</button>
         </form>
     </main>
 
     <script>
-        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-        const usuarioSelect = document.getElementById('usuario');
+    async function carregarUsuarios() {
+        try {
+            const response = await fetch('http://localhost:7000/u');
+            const usuarios = await response.json();
 
-        usuarios.forEach(usuario => {
-            const option = document.createElement('option');
-            option.value = usuario.nome; 
-            option.textContent = usuario.nome;
-            usuarioSelect.appendChild(option);
-        });
+            const usuarioSelect = document.getElementById('usuario');
+            usuarios.forEach(usuario => {
+                const option = document.createElement('option');
+                option.value = usuario.id; // importante: use o ID real do banco
+                option.textContent = usuario.nome;
+                usuarioSelect.appendChild(option);
+            });
+        } catch (error) {
+            alert('Erro ao carregar usuários do banco.');
+        }
+    }
 
-        document.getElementById('formCadastroTarefa').addEventListener('submit', function(event) {
-            event.preventDefault(); 
+    document.getElementById('formCadastroTarefa').addEventListener('submit', async function(event) {
+        event.preventDefault();
 
-          
-            const usuario = document.getElementById('usuario').value;
-            const descricao = document.getElementById('descricao').value;
-            const setor = document.getElementById('setor').value;
-            const prioridade = document.getElementById('prioridade').value;
-            const status = document.getElementById('status').value;
+        const usuarioId = document.getElementById('usuario').value;
+        const descricao = document.getElementById('descricao').value;
+        const setor = document.getElementById('setor').value;
+        const prioridade = document.getElementById('prioridade').value;
+        const status = document.getElementById('status').value;
 
-         
-            const tarefa = {
-                usuario,
-                descricao,
-                setor,
-                prioridade,
-                status
-            };
+        const tarefa = {
+            usuarioId: Number(usuarioId), // Prisma espera número
+            desc: descricao,
+            setor,
+            prioridade,
+            status,
+            dataCadastro: new Date().toISOString(),
+        };
 
-          
-            let tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
-            tarefas.push(tarefa);
-            localStorage.setItem('tarefas', JSON.stringify(tarefas));
+        try {
+            const response = await fetch('http://localhost:7000/t', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(tarefa),
+            });
 
-          
-            window.location.href = 'gerenciarTarefa.html';
-        });
-    </script>
+            const data = await response.json();
+
+            if (response.ok) {
+                alert('Tarefa cadastrada com sucesso!');
+                window.location.href = 'gerenciarTarefa.html';
+            } else {
+                alert('Erro ao cadastrar tarefa: ' + data.error);
+            }
+        } catch (error) {
+            alert('Erro ao conectar com o servidor.');
+        }
+    });
+
+    window.onload = carregarUsuarios;
+</script>
+
 </body>
 </html>

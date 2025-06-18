@@ -32,24 +32,34 @@
     </main>
 
     <script>
-        document.getElementById('formCadastroUsuario').addEventListener('submit', function(event) {
-            event.preventDefault(); 
+    document.getElementById('formCadastroUsuario').addEventListener('submit', async function(event) {
+        event.preventDefault();
 
-            const nome = document.getElementById('nome').value;
-            const email = document.getElementById('email').value;
+        const nome = document.getElementById('nome').value;
+        const email = document.getElementById('email').value;
 
-            const usuario = {
-                nome,
-                email
-            };
+        try {
+            const response = await fetch('http://localhost:7000/u', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ nome, email }),
+            });
 
-          
-            let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-            usuarios.push(usuario);
-            localStorage.setItem('usuarios', JSON.stringify(usuarios));
+            const data = await response.json();
 
-            window.location.href = 'CadastroTarefas.html';
-        });
+            if (response.ok) {
+                alert('Usuário cadastrado com sucesso!');
+                window.location.href = 'CadastroTarefas.html';
+            } else {
+                alert('Erro ao cadastrar: ' + data.error);
+            }
+        } catch (error) {
+            alert('Erro de conexão com o servidor.');
+        }
+    });
+
     </script>
 </body>
 </html>

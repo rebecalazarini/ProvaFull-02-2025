@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Gerenciar Tarefas</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
@@ -15,6 +15,7 @@
       <a href="gerenciarTarefa.html">Gerenciar Tarefas</a>
     </nav>
   </header>
+
   <div class="container">
     <h2>Tarefas</h2>
     <div class="tarefas">
@@ -34,64 +35,121 @@
   </div>
 
   <script>
-    // Recupera as tarefas do localStorage
-    const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
+    let tarefas = [];
 
-    // Função para exibir as tarefas
+    // Função para buscar tarefas da API
+    async function carregarTarefas() {
+      try {
+        const response = await fetch('http://localhost:7000/tarefas');
+        if (!response.ok) throw new Error('Erro ao buscar tarefas');
+
+        tarefas = await response.json();
+        exibirTarefas();
+      } catch (error) {
+        alert('Erro ao carregar tarefas: ' + error.message);
+      }
+    }
+
+    // Função para exibir as tarefas nas colunas correspondentes
     function exibirTarefas() {
+      // Limpar as colunas antes de preencher
+      document.getElementById('tarefasAFazer').innerHTML = '';
+      document.getElementById('tarefasFazendo').innerHTML = '';
+      document.getElementById('tarefasPronto').innerHTML = '';
+
       tarefas.forEach((tarefa, index) => {
         const tarefaDiv = document.createElement('div');
         tarefaDiv.classList.add('card');
+
         tarefaDiv.innerHTML = `
-          <strong>Descrição:</strong> ${tarefa.descricao}<br>
+          <strong>Descrição:</strong> ${tarefa.desc}<br>
           <strong>Setor:</strong> ${tarefa.setor}<br>
           <strong>Prioridade:</strong> ${tarefa.prioridade}<br>
-          <strong>Vinculado a:</strong> ${tarefa.usuario}<br>
+          <strong>Vinculado a:</strong> ${tarefa.usuarioId}<br>
+          <strong>Status:</strong> ${tarefa.status}<br><br>
           <button onclick="editarTarefa(${index})">Editar</button> 
-          <button onclick="excluirTarefa(${index})">Excluir</button><br>
-          <br>
-          <option>Alterar status</option>
-          <button onclick="mudarStatus(${index}, 'Fazendo')">Fazendo</button>
-          <button onclick="mudarStatus(${index}, 'Pronto')">Pronto</button>
+          <button onclick="excluirTarefa(${index})">Excluir</button><br><br>
+          <button onclick="mudarStatus(${index}, 'AFAZER')">A Fazer</button>
+          <button onclick="mudarStatus(${index}, 'FAZENDO')">Fazendo</button>
+          <button onclick="mudarStatus(${index}, 'PRONTO')">Pronto</button>
         `;
 
-        // Adiciona a tarefa na coluna correta com base no status
-        if (tarefa.status === 'Fazendo') {
+        // Colocar a tarefa na coluna correta
+        if (tarefa.status === 'FAZENDO') {
           document.getElementById('tarefasFazendo').appendChild(tarefaDiv);
-        } else if (tarefa.status === 'Pronto') {
+        } else if (tarefa.status === 'PRONTO') {
           document.getElementById('tarefasPronto').appendChild(tarefaDiv);
         } else {
+          // Qualquer status diferente vai para A Fazer
           document.getElementById('tarefasAFazer').appendChild(tarefaDiv);
         }
       });
     }
 
-    // Função para editar uma tarefa
-    function editarTarefa(index) {
+    // Editar a descrição da tarefa — atualiza no backend e no frontend
+    async function editarTarefa(index) {
       const tarefa = tarefas[index];
-      const descricao = prompt("Editar descrição:", tarefa.descricao);
-      if (descricao) {
-        tarefa.descricao = descricao;
-        localStorage.setItem('tarefas', JSON.stringify(tarefas));
-        location.reload(); // Atualiza a página para mostrar as alterações
+      const descricao = prompt("Editar descrição:", tarefa.desc);
+
+      if (descricao !== null && descricao.trim() !== '') {
+        try {
+          const response = await fetch(`http://localhost:7000/tarefas/${tarefa.id}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...tarefa, desc: descricao })
+          });
+
+          if (!response.ok) throw new Error('Erro ao editar tarefa');
+
+          tarefas[index].desc = descricao;
+          exibirTarefas();
+        } catch (error) {
+          alert(error.message);
+        }
       }
     }
 
-    // Função para excluir uma tarefa
-    function excluirTarefa(index) {
-      tarefas.splice(index, 1);
-      localStorage.setItem('tarefas', JSON.stringify(tarefas));
-      location.reload();
+    // Excluir tarefa — remove do backend e do frontend
+    async function excluirTarefa(index) {
+      const tarefa = tarefas[index];
+
+      if (confirm(`Deseja realmente excluir a tarefa: "${tarefa.desc}"?`)) {
+        try {
+          const response = await fetch(`http://localhost:7000/tarefas/${tarefa.id}`, {
+            method: 'DELETE'
+          });
+
+          if (!response.ok) throw new Error('Erro ao excluir tarefa');
+
+          tarefas.splice(index, 1);
+          exibirTarefas();
+        } catch (error) {
+          alert(error.message);
+        }
+      }
     }
 
-    // Função para mudar o status da tarefa
-    function mudarStatus(index, novoStatus) {
-      tarefas[index].status = novoStatus;
-      localStorage.setItem('tarefas', JSON.stringify(tarefas));
-      location.reload(); 
-    }
+    // Mudar status da tarefa — atualiza no backend e no frontend
+    async function mudarStatus(index, novoStatus) {
+      const tarefa = tarefas[index];
 
-    exibirTarefas();
+      try {
+        const response = await fetch(`http://localhost:7000/tarefas/${tarefa.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...tarefa, status: novoStatus })
+        });
+
+        if (!response.ok) throw new Error('Erro ao mudar status');
+
+        tarefas[index].status = novoStatus;
+        exibirTarefas();
+      } catch (error) {
+        alert(error.message);
+      }
+    }
+    window.onload = carregarTarefas;
+
   </script>
 </body>
 </html>

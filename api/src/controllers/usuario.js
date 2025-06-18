@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 
 const create = async (req, res) => {
   try {
+    console.log('Body recebido:', req.body); // <<< adicionar aqui para debug
     const { nome, email } = req.body;
 
     if (!nome || !email) {
@@ -75,4 +76,13 @@ const remove = async (req, res) => {
   }
 };
 
-module.exports = { create, read, update, remove };
+const readAll = async (req, res) => {
+  try {
+    const usuarios = await prisma.usuario.findMany();
+    return res.status(200).json(usuarios);
+  } catch (error) {
+    return res.status(500).json({ error: 'Erro ao buscar usuários.' });
+  }
+};
+
+module.exports = { create, read, readAll, update, remove };

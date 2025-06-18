@@ -9,9 +9,11 @@ routes.get('/', (req, res) => {
 });
 // Rotas de Usuário
 routes.post('/u', Usuario.create);          
-routes.get('/u/:id', Usuario.read);             
+routes.get('/u', Usuario.readAll);    // lista todos os usuários
+routes.get('/u/:id', Usuario.read);   // busca usuário por id
 routes.put('/u/:id', Usuario.update);        
-routes.delete('/u/:id', Usuario.remove);    
+routes.delete('/u/:id', Usuario.remove);
+   
 
 routes.post('/t', Tarefa.create);
 routes.get('/t', Tarefa.read);   
@@ -20,4 +22,5 @@ routes.get('/tarefas', Gerenciador.get);
 routes.put('/tarefas/:id', Gerenciador.update);        
 routes.delete('/tarefas/:id', Gerenciador.remove);
 routes.put('/tarefas/status/:id', Gerenciador.atualizarStatus); 
+
 module.exports = routes;
